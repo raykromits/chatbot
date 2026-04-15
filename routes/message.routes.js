@@ -1,9 +1,9 @@
 const express = require('express');
-const messageController = require('../controllers/message.controller');
+const controller = require('../controllers/message.controller');
 
 const router = express.Router();
 
-router.post('/conversations/:conversationId/messages', messageController.createMessage);
-router.get('/conversations/:conversationId/messages', messageController.listMessagesByConversationId);
+router.post('/conversations/:conversation_id/messages', controller.createMessage);
+router.get('/conversations/:conversation_id/messages', controller.listMessages);
 
 module.exports = router;

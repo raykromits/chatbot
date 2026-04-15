@@ -2,24 +2,29 @@ const conversationRepository = require('../repositories/conversation.repository'
 
 async function createConversation(req, res) {
   try {
-    const { customerName, customerPhone, channel, assignedAgent } = req.body;
+    const {
+      customer_name,
+      customer_phone,
+      channel,
+      assigned_agent,
+    } = req.body;
 
-    if (!customerPhone) {
+    if (!customer_phone) {
       return res.status(400).json({
-        error: 'customerPhone is required',
+        error: 'customer_phone is required',
       });
     }
 
     const conversation = await conversationRepository.createConversation({
-      customerName,
-      customerPhone,
+      customer_name,
+      customer_phone,
       channel,
-      assignedAgent,
+      assigned_agent,
     });
 
     return res.status(201).json(conversation);
   } catch (error) {
-    console.error('Create conversation error:', error);
+    console.error(error);
 
     return res.status(500).json({
       error: 'Internal server error',
@@ -39,9 +44,9 @@ async function getConversationById(req, res) {
       });
     }
 
-    return res.status(200).json(conversation);
+    return res.json(conversation);
   } catch (error) {
-    console.error('Get conversation error:', error);
+    console.error(error);
 
     return res.status(500).json({
       error: 'Internal server error',
@@ -52,26 +57,22 @@ async function getConversationById(req, res) {
 async function updateConversationState(req, res) {
   try {
     const { id } = req.params;
-    const { currentState } = req.body;
+    const { current_state } = req.body;
 
-    if (!currentState) {
+    if (!current_state) {
       return res.status(400).json({
-        error: 'currentState is required',
+        error: 'current_state is required',
       });
     }
 
-    const updatedConversation =
-      await conversationRepository.updateConversationState(id, currentState);
+    const conversation = await conversationRepository.updateConversationState(
+      id,
+      current_state
+    );
 
-    if (!updatedConversation) {
-      return res.status(404).json({
-        error: 'Conversation not found',
-      });
-    }
-
-    return res.status(200).json(updatedConversation);
+    return res.json(conversation);
   } catch (error) {
-    console.error('Update conversation state error:', error);
+    console.error(error);
 
     return res.status(500).json({
       error: 'Internal server error',
@@ -83,17 +84,11 @@ async function closeConversation(req, res) {
   try {
     const { id } = req.params;
 
-    const closedConversation = await conversationRepository.closeConversation(id);
+    const conversation = await conversationRepository.closeConversation(id);
 
-    if (!closedConversation) {
-      return res.status(404).json({
-        error: 'Conversation not found',
-      });
-    }
-
-    return res.status(200).json(closedConversation);
+    return res.json(conversation);
   } catch (error) {
-    console.error('Close conversation error:', error);
+    console.error(error);
 
     return res.status(500).json({
       error: 'Internal server error',

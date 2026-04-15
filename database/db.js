@@ -1,24 +1,21 @@
 const { Pool } = require('pg');
 const config = require('../config/env');
 
-const pool = new Pool({
-    host: config.db.host,
-    port: config.db.port,
-    database: config.db.database,
-    user: config.db.user,
-    password: config.db.password,
-});
+const pool = new Pool(config.db);
 
 pool.on('connect', () => {
-    console.log('Connected to the database');
+  console.log('Connected to PostgreSQL');
 });
 
 pool.on('error', (err) => {
-    console.error('Unexpected error on idle client', err);
+  console.error('Unexpected DB error:', err);
 });
 
-module.exports = {
-    query: (text, params) => pool.query(text, params),
-    pool,
-};
+async function query(text, params) {
+  return pool.query(text, params);
+}
 
+module.exports = {
+  query,
+  pool,
+};

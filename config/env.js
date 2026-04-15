@@ -1,17 +1,17 @@
 require('dotenv').config();
 
 const requiredEnvVars = [
-    'DB_HOST',
-    'DB_PORT',
-    'DB_NAME',
-    'DB_USER',
-    'DB_PASSWORD',
-]
+  'DB_HOST',
+  'DB_PORT',
+  'DB_NAME',
+  'DB_USER',
+  'DB_PASSWORD',
+];
 
-for(const envVar of requiredEnvVars) {
-    if(!process.env[envVar]) {
-        throw new Error(`Environment variable ${envVar} is required but not set.`);
-    }
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Environment variable ${envVar} is required but not set.`);
+  }
 }
 
 const port = Number(process.env.PORT) || 3000;
